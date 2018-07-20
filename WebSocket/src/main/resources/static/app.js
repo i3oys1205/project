@@ -108,7 +108,7 @@ function sendJoin(){
 }
 
 // 서버로 부터 수신한 메시지를 웹브라우저에 출력한다.
-function showGreeting(message) {
+function showGreeting(message) { 
 	// '#greetings'는 index.html의 tbody id="greetings"이다.
 	// 즉 메시지를 수신할 때마다 테이블의 row가 추가된다.
     $("#greetings").append("<tr><td>" + message + "</td></tr>");
