@@ -18,7 +18,7 @@ public class WebSocketConfig extends AbstractWebSocketMessageBrokerConfigurer {
     	// 
     	// 그런데 컨트롤러에서 @SendTo("/greetings")로 하면 클라이언트로 응답이 전달되지 않음...
     	// 정확히 무슨 의미인지 모르겠음.
-    	config.enableSimpleBroker("/topic");
+    	config.enableSimpleBroker("/chat");
     	
     	// Server의 controller에서 사용할 토픽의 prefix
     	// 이 설정으로 인해서 컨트롤러에서 @MessageMapping 할 때 "/app/hello" -> "/hello" 라고 선언해도 됨.
@@ -30,7 +30,7 @@ public class WebSocketConfig extends AbstractWebSocketMessageBrokerConfigurer {
     // Request URL:http://127.0.0.1:8080/gs-guide-websocket/info?t=1488257937687
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
-        registry.addEndpoint("/gs-guide-websocket").withSockJS();
+        registry.addEndpoint("/websocket").withSockJS();
     }
 
 }

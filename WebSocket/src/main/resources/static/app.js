@@ -16,7 +16,6 @@ function setConnected(connected) {
     else {
         $("#conversation").hide();
     }
-    
     // table body 초기화
     $("#greetings").html("");
 }
@@ -24,8 +23,8 @@ function setConnected(connected) {
 
 // 웹소켓으로 서버에 접속한다.
 function connect() {
-	// 서버소켓의 endpoint인 "/gs-guide-websocket"로 접속할 클라이언트 소켓 생성
-    var socket = new SockJS('/gs-guide-websocket');
+	// 서버소켓의 endpoint인 "/websocket"로 접속할 클라이언트 소켓 생성
+    var socket = new SockJS('/websocket');
     
     // 전역 변수에 세션 설정
     stompClient = Stomp.over(socket);
@@ -44,6 +43,7 @@ function connect() {
     // Body^@
     //---------------------
     stompClient.connect({}, function (frame) {
+    	
         setConnected(true);
         
         // 콘솔 출력 결과는 다음과 같다.
@@ -53,7 +53,7 @@ function connect() {
         console.log('Connected: ' + frame);
         
         // 토픽이 "/topic/greetings"로 수신되는 메시지는 showGreeting 함수로 처리하도록 stompClient에 등록. 
-        stompClient.subscribe('/topic/greetings', function (message) {
+        stompClient.subscribe('/chat/greetings', function (message) {
         	// 콘솔 출력 결과는 다음과 같다.
         	// connect() message: MESSAGE
         	// content-length:29
@@ -69,6 +69,13 @@ function connect() {
         	// 서버로 부터 수신한 message의 body를 json으로 파싱해서 showGreeting() 함수로 처리한다.
             showGreeting(JSON.parse(message.body).content);
         });
+        
+        stompClient.subscribe('/chat/Join', function (message) {
+        	showGreeting(JSON.parse(message.body).content);
+        });
+        
+        sendJoin();
+        
     });
 }
 
@@ -90,9 +97,15 @@ function sendName() {
 	// 대상 토픽을 "/app/hello"로 정의 했지만 서버에서는 WebSocketConfig.java에 설정된 prefix가 적용되어 "/topic/app/hello"로 처리됨.
 	// 'name'은 속성의 key 값으로 HelloMessage.java의 name 필드와 이름을 맞춘것이다.
 	// '#name'은 속성의 value 값으로 index.html의 input id="name"과 이름을 맞춘것이다.  
-    stompClient.send("/app/hello", {}, JSON.stringify({'name': $("#name").val()}));
+	    stompClient.send("/app/hello", {}, JSON.stringify({
+		'name' : $("#name").val()
+	}));
 }
-
+function sendJoin(){
+	stompClient.send("/app/Join", {}, JSON.stringify({
+		'name' : $("#name").val()
+	}));
+}
 
 // 서버로 부터 수신한 메시지를 웹브라우저에 출력한다.
 function showGreeting(message) {
