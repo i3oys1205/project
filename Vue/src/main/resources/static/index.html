@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Vue</title>
+</head>
+<body>
+	<div>
+		<h5>동적 바인딩</h5>
+		<div id="app">
+			<button v-on:click="msg_dynamic_1">동적 변경</button>
+			{{ message }}
+		</div>
+
+		<h5>tooltip Hover 바인딩</h5>
+		<div id="app-2">
+			<span v-bind:title="message"> 내 위에 잠시 마우스를 올리면 동적으로 바인딩 된 title을 볼 수 있습니다! </span>
+		</div>
+
+		<div id="app-7">
+			<ol>
+				<todo-item v-for="item in groceryList" v-bind:todo="item" v-bind:key="item.id"> </todo-item>
+			</ol>
+		</div>
+			
+	</div>
+
+	<script src="https://cdn.jsdelivr.net/npm/vue"></script>
+	<script src="js/vueApp.js"></script>
+</body>
+</html>
