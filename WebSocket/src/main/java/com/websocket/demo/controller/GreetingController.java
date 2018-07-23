@@ -14,7 +14,6 @@ public class GreetingController {
     @SendTo("/chat/greetings")  // 응답을 보낼 토픽 주소
     public Greeting greeting(HelloMessage message) throws Exception {
         Thread.sleep(1000); // simulated delay
-        
         // Greeting 클래스로 응답을 전달. json 형태로 전달됨.
         return new Greeting("Hello, " + message.getName() + "!");
     }
